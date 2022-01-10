@@ -13,8 +13,8 @@ Learn to Write Clean Code with Java. Get Hands-on with Code Examples involving 4
 - Goal 
 	- Understand **Clarity of Code**
 	- Give **importance** to Unit Testing
-- `GildedRoseADefaultItemTest.java`
-- `GildedRoseBAgedBrieTest.java`
+[x] - `GildedRoseADefaultItemTest.java`
+[x] - `GildedRoseBAgedBrieTest.java`
 - `GildedRoseCBackstagePassesTest.java`
 - More details - [Gilded Rose Exercises](https://github.com/in28minutes/clean-code/blob/master/GildedRoseProblemStatement.md)
 

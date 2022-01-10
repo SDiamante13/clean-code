@@ -1,41 +1,54 @@
 package com.a.introduction.gildedrose;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class GildedRoseBAgedBrieTest {
+class GildedRoseBAgedBrieTest {
+    private static final String AGED_BRIE = "Aged Brie";
+    private static final int UNEXPIRED_SELLIN = 4;
+    private static final int EXPIRED_SELLIN = -1;
+    private static final int DEFAULT_QUALITY = 3;
+    private static final String[] fields = {"name", "sellIn", "quality"};
+    private static final int MAX_QUALITY = 50;
 
-	@Test
-	public void testUpdateQualityAgedBrie1() {
-		Item item = new Item("Aged Brie", 4, 3);
-		Item[] items = new Item[] { item };
-		GildedRose app = new GildedRose(items);
-		app.updateQuality();
-		assertEquals("Aged Brie", app.items[0].name);
-		assertEquals(3, app.items[0].sellIn);
-		assertEquals(4, app.items[0].quality);
-	}
+    @Test
+    void updateQuality_increasesQualityBy1_forAgedBrie() {
+        GildedRose app = createGildedRoseWithOneAgedBrie(AGED_BRIE, UNEXPIRED_SELLIN, DEFAULT_QUALITY);
 
-	@Test
-	public void testUpdateQualityAgedBrie2() {
-		Item item = new Item("Aged Brie", -1, 3);
-		Item[] items = new Item[] { item };
-		GildedRose app = new GildedRose(items);
-		app.updateQuality();
-		assertEquals("Aged Brie", app.items[0].name);
-		assertEquals(-2, app.items[0].sellIn);
-		assertEquals(5, app.items[0].quality);
-	}
+        app.updateQuality();
 
-	@Test
-	public void testUpdateQualityAgedBrie3() {
-		Item item = new Item("Aged Brie", 4, 50);
-		Item[] items = new Item[] { item };
-		GildedRose app = new GildedRose(items);
-		app.updateQuality();
-		assertEquals("Aged Brie", app.items[0].name);
-		assertEquals(3, app.items[0].sellIn);
-		assertEquals(50, app.items[0].quality);
-	}
+        assertThat(app.items)
+                .extracting(fields)
+                .contains(tuple(AGED_BRIE, UNEXPIRED_SELLIN - 1, DEFAULT_QUALITY + 1));
+    }
+
+    @Test
+    void updateQuality_increasesQualityBy2_forExpiredAgedBrie() {
+        GildedRose app = createGildedRoseWithOneAgedBrie(AGED_BRIE, EXPIRED_SELLIN, DEFAULT_QUALITY);
+
+        app.updateQuality();
+
+        assertThat(app.items)
+                .extracting(fields)
+                .contains(tuple(AGED_BRIE, EXPIRED_SELLIN - 1, DEFAULT_QUALITY + 2));
+    }
+
+    @Test
+    void updateQuality_DoesNotIncreaseQuality_forAgedBrieWithMaximumQuality() {
+        GildedRose app = createGildedRoseWithOneAgedBrie(AGED_BRIE, UNEXPIRED_SELLIN, MAX_QUALITY);
+
+        app.updateQuality();
+
+        assertThat(app.items)
+                .extracting(fields)
+                .contains(tuple(AGED_BRIE, UNEXPIRED_SELLIN - 1, MAX_QUALITY));
+    }
+
+    private GildedRose createGildedRoseWithOneAgedBrie(String AGED_BRIE, int UNEXPIRED_SELLIN, int DEFAULT_QUALITY) {
+        return new GildedRose(new Item[]{new Item(AGED_BRIE, UNEXPIRED_SELLIN, DEFAULT_QUALITY)});
+    }
 }
