@@ -8,29 +8,36 @@ import static org.assertj.core.api.Assertions.*;
 
 class GildedRoseADefaultItemTest {
 
+    private static final String NORMAL_ITEM = "NORMAL_ITEM";
+    public static final int NOT_EXPIRED_SELLIN = 15;
+    public static final int EXPIRED_SELLIN = -1;
+    public static final int DEFAULT_QUALITY = 3;
+
     @Test
-    void updateQuality_qualityAndSellInShouldDecreaseByOne_whenItemIsNotExpired() {
-        GildedRose app = new GildedRose(new Item[]{
-                new Item("DEFAULT_ITEM", 15, 3)
-        });
+    void updateQuality_qualityShouldDecreaseByOne_whenNormalItemIsNotExpired() {
+        GildedRose app = createGildedRoseWithOneItem(NORMAL_ITEM, NOT_EXPIRED_SELLIN, DEFAULT_QUALITY);
 
         app.updateQuality();
 
         assertThat(app.items)
                 .extracting("name", "sellIn", "quality")
-                .contains(tuple("DEFAULT_ITEM", 14, 2));
+                .contains(tuple(NORMAL_ITEM, NOT_EXPIRED_SELLIN - 1, DEFAULT_QUALITY - 1));
     }
 
     @Test
-    void updateQuality_qualityShouldDecreaseByTwo_whenItemIsExpired() {
-        GildedRose app = new GildedRose(new Item[]{
-                new Item("DEFAULT_ITEM", -1, 3)
-        });
+    void updateQuality_qualityShouldDecreaseByTwo_whenNormalItemIsExpired() {
+        GildedRose app = createGildedRoseWithOneItem(NORMAL_ITEM, EXPIRED_SELLIN, DEFAULT_QUALITY);
 
         app.updateQuality();
 
         assertThat(app.items)
                 .extracting("name", "sellIn", "quality")
-                .contains(tuple("DEFAULT_ITEM", -2, 1));
+                .contains(tuple(NORMAL_ITEM, EXPIRED_SELLIN - 1, DEFAULT_QUALITY - 2));
+    }
+
+    private GildedRose createGildedRoseWithOneItem(String itemName, int sellIn, int quality) {
+        return new GildedRose(new Item[]{
+                new Item(itemName, sellIn, quality)
+        });
     }
 }
