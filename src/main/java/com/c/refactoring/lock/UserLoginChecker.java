@@ -25,8 +25,7 @@ public class UserLoginChecker {
                 if (time.getTime() - lockTimestamp.getTime() > 3600000) {
                     //New user gets lock only on first screen 
                     //If 1 1/2 hours expires when user is not on 1st screen then for same user lock can be refreshed.
-                    if (firstScreen
-                            || userId.equalsIgnoreCase(user.getUserId())) {
+                    if (firstScreen || userId.equalsIgnoreCase(user.getUserId())) {
                         //to set the  access to write mode
                         lck.setRead(false);
                         return lck;

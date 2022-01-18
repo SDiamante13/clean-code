@@ -10,16 +10,10 @@ public class MenuAccess {
             MenuItem menuItem = menuItemsList.get(i);
             if (roles != null) {
                 for (int j = 0; j < roles.length; j++) {
-                    if (roles[j].getName().equals(menuItem
-                            .getReadAccessRole())
-                            && !Constants.WRITE.equals(
-                                    menuItem
-                                            .getAccess())) {
+                    if (roles[j].getName().equals(menuItem.getReadAccessRole()) && !Constants.WRITE.equals(menuItem.getAccess())) {
                         menuItem.setAccess(Constants.READ);
                         menuItem.setVisible(true);
-                    } else if (roles[j].getName().equals(
-                            menuItem
-                                    .getWriteAccessRole())) {
+                    } else if (roles[j].getName().equals(menuItem.getWriteAccessRole())) {
                         menuItem.setAccess(Constants.WRITE);
                         menuItem.setVisible(true);
                     }
