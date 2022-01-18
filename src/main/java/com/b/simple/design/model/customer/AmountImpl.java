@@ -1,6 +1,7 @@
 package com.b.simple.design.model.customer;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class AmountImpl implements Amount {
 
@@ -31,4 +32,16 @@ public class AmountImpl implements Amount {
 		return currency;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		AmountImpl amount = (AmountImpl) o;
+		return Objects.equals(value, amount.value) && currency == amount.currency;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(value, currency);
+	}
 }
