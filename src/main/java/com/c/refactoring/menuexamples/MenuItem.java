@@ -2,6 +2,8 @@ package com.c.refactoring.menuexamples;
 
 import java.util.List;
 
+import static com.c.refactoring.menuexamples.Constants.WRITE;
+
 public class MenuItem {
 
     String access;
@@ -12,15 +14,14 @@ public class MenuItem {
     boolean visible;
     String writeAccessRole;
 
-    public MenuItem(String name ,
-            boolean visible , List<MenuItem> childMenus) {
+    public MenuItem(String name, boolean visible, List<MenuItem> childMenus) {
         super();
         this.name = name;
         this.visible = visible;
         this.childMenus = childMenus;
     }
 
-    public MenuItem(String name , String readAccessRole , String writeAccessRole) {
+    public MenuItem(String name, String readAccessRole, String writeAccessRole) {
         super();
         this.name = name;
         this.readAccessRole = readAccessRole;
@@ -86,4 +87,7 @@ public class MenuItem {
         return builder.toString();
     }
 
+    boolean isWriteAccess() {
+        return WRITE.equals(this.access);
+    }
 }
