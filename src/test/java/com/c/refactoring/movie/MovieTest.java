@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class MovieTest {
+class MovieTest {
     @Test
-    public void testIsValidRating() {    	
+    void testIsValidRating() {
         assertTrue(new Movie("B1").isValidRating());
         assertTrue(new Movie("B2").isValidRating());
         assertTrue(new Movie("B3").isValidRating());
