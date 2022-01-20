@@ -5,23 +5,32 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class StringHelperTest {
 	//"", "A", "AA", "B", "BC"
 	StringHelper helper = new StringHelper();
 
-	@Test
-	void testReplaceAInFirst2Positions() {
-		assertEquals("BCD", helper.replaceAInFirst2Positions("ABCD"));
-		assertEquals("CD", helper.replaceAInFirst2Positions("AACD"));
-		assertEquals("BCD", helper.replaceAInFirst2Positions("BACD"));
-		assertEquals("AA", helper.replaceAInFirst2Positions("AAAA"));
-		assertEquals("MNAA", helper.replaceAInFirst2Positions("MNAA"));
-		assertEquals("", helper.replaceAInFirst2Positions(""));
-		assertEquals("", helper.replaceAInFirst2Positions("A"));
-		assertEquals("", helper.replaceAInFirst2Positions("AA"));
-		assertEquals("B", helper.replaceAInFirst2Positions("B"));
-		assertEquals("BC", helper.replaceAInFirst2Positions("BC"));
+	@ParameterizedTest
+	@CsvSource(value = {
+			"ABCD,BCD",
+			"AACD,CD",
+			"BACD,BCD",
+			"AAAA,AA",
+			"MNAA,MNAA",
+			"'',''",
+			"A,''",
+			"AA,''",
+			"B,B",
+			"BC,BC",
+	})
+	void testReplaceAInFirst2Positions(String input, String expected) {
+		assertEquals(expected, helper.replaceAInFirst2Positions(input));
 	}
 	
 	//""=>false, "A"=>false, "AB"=>true, "ABC"=>false, "AAA"=>true, "ABCAB"=>true, "ABCDEBA"=>false
@@ -29,15 +38,22 @@ class StringHelperTest {
 	//Green
 	//Refactor
 
-	@Test
-	void testAreFirstTwoAndLastTwoCharsTheSame() {
-		assertFalse(helper.areFirstTwoAndLastTwoCharsTheSame(""));
-		assertFalse(helper.areFirstTwoAndLastTwoCharsTheSame("A"));
-		assertTrue(helper.areFirstTwoAndLastTwoCharsTheSame("AB"));
-		assertFalse(helper.areFirstTwoAndLastTwoCharsTheSame("ABC"));
-		assertTrue(helper.areFirstTwoAndLastTwoCharsTheSame("AAA"));
-		assertTrue(helper.areFirstTwoAndLastTwoCharsTheSame("ABCAB"));
-		assertFalse(helper.areFirstTwoAndLastTwoCharsTheSame("ABCDEBA"));	
+	@ParameterizedTest
+	@MethodSource("provideArguments")
+	void testAreFirstTwoAndLastTwoCharsTheSame(boolean expected, String input) {
+		assertEquals(expected, helper.areFirstTwoAndLastTwoCharsTheSame(input));
+	}
+
+	private static Stream<Arguments> provideArguments() {
+		return Stream.of(
+				Arguments.of(false, ""),
+				Arguments.of(false, "A"),
+				Arguments.of(true, "AB"),
+				Arguments.of(false, "ABC"),
+				Arguments.of(true, "AAA"),
+				Arguments.of(true, "ABCAB"),
+				Arguments.of(false, "ABCDEBA")
+		);
 	}
 
 }
